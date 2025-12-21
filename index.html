@@ -104,56 +104,6 @@
             box-shadow: 0 0 25px rgba(189, 195, 199, 0.6) !important;
         }
 
-        /* Card Header Area */
-        .card-header-area {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            margin-bottom: 8px;
-            z-index: 10;
-        }
-
-        .title-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
-
-        .name-container {
-            border: 3px solid #2d3436;
-            padding: 6px 10px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.9);
-            flex-grow: 1;
-            margin-right: 8px;
-        }
-
-        #card-name { font-weight: 900; font-size: 1.1rem; color: #2d3436; margin: 0; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-        #shop-name-display {
-            font-size: 0.75rem;
-            font-weight: 800;
-            color: #636e72;
-            padding-left: 4px;
-            margin-top: 4px;
-        }
-
-        .rarity-icon {
-            width: 40px;
-            height: 40px;
-            background: #2d3436;
-            color: #fbc531;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            font-weight: 900;
-            flex-shrink: 0;
-            border: 2px solid #fbc531;
-        }
-
         /* Photo Area */
         .photo-frame {
             width: 100%;
@@ -165,10 +115,8 @@
             z-index: 10;
             background: #f1f2f6;
         }
-
         #card-img-el { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Description Area */
         .description-box {
             flex-grow: 1;
             padding: 12px;
@@ -179,14 +127,8 @@
             z-index: 10;
         }
 
-        #praise-text { 
-            font-size: 10px; 
-            font-weight: 700; 
-            line-height: 1.4; 
-            color: #2d3436; 
-        }
+        #praise-text { font-size: 10px; font-weight: 700; line-height: 1.4; color: #2d3436; }
 
-        /* Footer Stats Area */
         .rank-badge {
             position: absolute;
             bottom: 35px; 
@@ -198,7 +140,6 @@
             z-index: 40;
             text-align: center;
         }
-        .rank-label { font-size: 8px; font-weight: 900; color: #b2bec3; }
         .rank-val { font-size: 24px; font-weight: 900; color: #ff7675; line-height: 1; }
 
         .battle-stats {
@@ -217,20 +158,7 @@
             text-align: center;
             min-width: 65px;
         }
-        .stat-label-jp { font-size: 7px; font-weight: 900; color: #b2bec3; }
         .stat-num { font-size: 18px; font-weight: 900; line-height: 1.1; }
-
-        .collector-id {
-            position: absolute;
-            bottom: 10px;
-            width: 100%;
-            left: 0;
-            text-align: center;
-            font-size: 8px;
-            font-weight: 900;
-            color: #b2bec3;
-            z-index: 40;
-        }
 
         /* Form UI */
         #main-form-container {
@@ -240,348 +168,166 @@
             min-height: 70vh;
             width: 100%;
             max-width: 600px;
-            transition: opacity 0.5s ease;
         }
 
-        .ui-card { 
-            background: white; 
-            border-radius: 35px; 
-            padding: 2.5rem; 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-            width: 100%;
-        }
+        .ui-card { background: white; border-radius: 35px; padding: 2.5rem; box-shadow: 0 20px 50px rgba(0,0,0,0.1); width: 100%; }
+        .input-jp { width: 100%; background: #f1f2f6; border: 3px solid transparent; border-radius: 18px; padding: 14px 22px; font-weight: 800; margin-bottom: 1rem; }
+        .btn-action { background: #fbc531; color: #2d3436; padding: 1.2rem; border-radius: 22px; font-weight: 900; width: 100%; box-shadow: 0 6px 0 #e1b12c; cursor: pointer; }
 
-        .input-jp { width: 100%; background: #f1f2f6; border: 3px solid transparent; border-radius: 18px; padding: 14px 22px; font-weight: 800; margin-bottom: 1rem; transition: 0.3s; }
-        .input-jp:focus { border-color: #fbc531; outline: none; background: #fff; box-shadow: 0 0 15px rgba(251, 197, 49, 0.2); }
-        
-        .textarea-jp { height: 100px; resize: none; }
-
-        .btn-action { background: #fbc531; color: #2d3436; padding: 1.2rem; border-radius: 22px; font-weight: 900; width: 100%; box-shadow: 0 6px 0 #e1b12c; transition: 0.1s; cursor: pointer; }
-        .btn-action:active { transform: translateY(4px); box-shadow: 0 2px 0 #e1b12c; }
-
-        /* Loading Screen UI */
         #loading-screen {
-            position: fixed;
-            inset: 0;
-            background: rgba(255,255,255,0.95);
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            text-align: center;
-            padding: 20px;
-        }
-        .loading-text { font-size: 2rem; font-weight: 900; color: #fbc531; margin-bottom: 1rem; }
-        .pos-message { font-size: 1.2rem; font-weight: 800; color: #636e72; min-height: 3rem; animation: fadeText 2s infinite; }
-
-        @keyframes fadeText {
-            0%, 100% { opacity: 0; transform: translateY(10px); }
-            20%, 80% { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Result View Area */
-        #result-area {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            margin-top: 20px;
+            position: fixed; inset: 0; background: rgba(255,255,255,0.95);
+            display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100;
         }
     </style>
 </head>
 <body class="p-4">
 
     <header class="text-center mt-6 mb-4">
-        <h1 class="text-3xl md:text-5xl font-black text-blue-500 italic">
-            美味決闘 <span class="text-yellow-500">デリシャスデュエル</span>
-        </h1>
+        <h1 class="text-3xl md:text-5xl font-black text-blue-500 italic">美味決闘 <span class="text-yellow-500">デリシャスデュエル</span></h1>
     </header>
 
-    <!-- Main Input Form -->
     <div id="main-form-container">
         <div class="ui-card">
-            <h2 class="text-xl font-black mb-6 text-center text-slate-700">究極の美食データを入力</h2>
-            <input type="text" id="input-dish" class="input-jp" placeholder="料理の名前（例：究極のオムライス）">
-            <input type="text" id="input-shop" class="input-jp" placeholder="お店の名前（例：キッチン・ルミエール）">
-            <textarea id="input-points" class="input-jp textarea-jp" placeholder="美食ポイント：味、香り、感動したポイントを熱く語ってください！熱量が高いほど、伝説のカードになるかも...？"></textarea>
+            <input type="text" id="input-dish" class="input-jp" placeholder="料理の名前">
+            <input type="text" id="input-shop" class="input-jp" placeholder="お店の名前">
+            <textarea id="input-points" class="input-jp h-24" placeholder="美食ポイント（熱量が高いほどレア度UP！）"></textarea>
             
-            <label for="file-input" class="block cursor-pointer">
+            <label class="block cursor-pointer">
                 <div class="border-4 border-dashed border-slate-200 rounded-[25px] py-8 flex flex-col items-center hover:bg-slate-50 transition">
-                    <div class="bg-blue-500 text-white p-4 rounded-full mb-3">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                    </div>
-                    <span class="text-sm font-black text-slate-500">料理の写真をアップロードして鑑定開始</span>
+                    <span class="text-sm font-black text-slate-500">写真をアップロードして鑑定開始</span>
                 </div>
                 <input type="file" id="file-input" class="hidden" accept="image/*">
             </label>
         </div>
     </div>
 
-    <!-- Loading screen with messages -->
     <div id="loading-screen">
-        <div class="loading-text">思考中です...</div>
-        <div class="inline-block w-12 h-12 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin mb-6"></div>
-        <div id="pos-message" class="pos-message"></div>
+        <div class="text-2xl font-black text-yellow-500 mb-4">思考中です...</div>
+        <div id="pos-message" class="text-lg font-bold text-slate-500"></div>
     </div>
 
-    <!-- Result View Area -->
-    <div id="result-area">
+    <div id="result-area" class="hidden flex-col items-center mt-10">
         <div class="card-container">
             <div id="card-preview">
                 <div class="shine-layer"></div>
-                <div class="card-header-area">
-                    <div class="title-row">
-                        <div class="name-container">
-                            <h3 id="card-name">---</h3>
+                <div class="mb-2">
+                    <div class="flex justify-between items-center">
+                        <div class="border-2 border-slate-800 p-2 rounded bg-white flex-grow mr-2">
+                            <h3 id="card-name" class="font-black text-sm">---</h3>
                         </div>
-                        <div id="rarity-icon" class="rarity-icon">-</div>
+                        <div id="rarity-icon" class="w-10 h-10 bg-slate-800 text-yellow-400 rounded-full flex items-center justify-center font-black">-</div>
                     </div>
-                    <div id="shop-name-display">---</div>
                 </div>
-                <div class="photo-frame">
-                    <img src="" id="card-img-el" crossorigin="anonymous">
-                </div>
-                <div class="description-box">
-                    <p id="praise-text">美食鑑定中...</p>
-                </div>
-                <div class="rank-badge">
-                    <div class="rank-label">おいしさ</div>
-                    <div class="rank-val" id="val-score">00</div>
-                </div>
+                <div class="photo-frame"><img src="" id="card-img-el"></div>
+                <div class="description-box"><p id="praise-text"></p></div>
+                <div class="rank-badge"><div class="rank-val" id="val-score">00</div></div>
                 <div class="battle-stats">
-                    <div class="stat-box">
-                        <div class="stat-label-jp">こうげき</div>
-                        <div class="stat-num" id="val-atk">0</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-label-jp">ぼうぎょ</div>
-                        <div class="stat-num" id="val-def">0</div>
-                    </div>
-                </div>
-                <div class="collector-id">
-                    No. <span id="serial-num">---</span> / DELICIOUS DUEL PREMIUM
+                    <div class="stat-box"><div class="stat-num" id="val-atk">0</div></div>
+                    <div class="stat-box"><div class="stat-num" id="val-def">0</div></div>
                 </div>
             </div>
         </div>
-
-        <div class="w-full max-w-sm space-y-4 mt-6">
-            <button id="download-btn" class="btn-action text-lg">このカードを保存する</button>
-            <div class="grid grid-cols-2 gap-4">
-                <button id="report-btn" class="bg-blue-100 text-blue-600 py-3 rounded-xl font-black text-sm">レポートを表示</button>
-                <button id="copy-btn" class="bg-slate-100 text-slate-600 py-3 rounded-xl font-black text-sm">SNS文をコピー</button>
-            </div>
-            <button onclick="location.reload()" class="w-full py-3 text-slate-400 font-bold text-xs underline">もう一度作成する</button>
-        </div>
-    </div>
-
-    <!-- Modal UI -->
-    <div id="info-modal" class="hidden fixed inset-0 bg-black/60 z-[1000] items-center justify-center p-6 backdrop-blur-sm">
-        <div class="bg-white p-8 rounded-[40px] max-w-md w-full relative shadow-2xl">
-            <button onclick="closeModal()" class="absolute -top-4 -right-4 bg-white w-12 h-12 rounded-full flex items-center justify-center text-2xl font-black shadow-xl">&times;</button>
-            <h2 id="modal-title" class="text-xl font-black mb-4 text-blue-500 text-center"></h2>
-            <div id="modal-body" class="text-slate-600 font-bold text-sm leading-relaxed whitespace-pre-wrap"></div>
-        </div>
+        <button id="download-btn" class="btn-action mt-6 max-w-sm">このカードを保存する</button>
+        <button onclick="location.reload()" class="mt-4 text-slate-400 underline">もう一度作る</button>
     </div>
 
     <script>
-        const apiKey = ""; // GitHubに公開する際はここに自分のAPIキーを入れる必要があります
-        let currentCardData = null;
+        // 【重要】GitHubで動かすには、ここに自分のAPIキーを貼り付けてください
+        const apiKey = ""; 
 
-        // Messages shown during loading
-        const messages = [
-            "あなたの感動を解析中...",
-            "最高の盛り付けをスキャンしています...",
-            "旨味成分をシミュレート中...",
-            "この料理の物語を読み解いています...",
-            "芸術点を確認しています...",
-            "伝説級の美味しさを検知しました！",
-            "鑑定書を作成しています...",
-            "カードの質感を調整しています..."
-        ];
-
+        const messages = ["感動を解析中...", "盛り付けをスキャン中...", "旨味を計算中...", "伝説を読み解き中..."];
         let msgIndex = 0;
-        function updatePosMessage() {
-            document.getElementById('pos-message').textContent = messages[msgIndex];
-            msgIndex = (msgIndex + 1) % messages.length;
-        }
-
-        const el = {
-            fileInput: document.getElementById('file-input'),
-            inputDish: document.getElementById('input-dish'),
-            inputShop: document.getElementById('input-shop'),
-            inputPoints: document.getElementById('input-points'),
-            formContainer: document.getElementById('main-form-container'),
-            loadingScreen: document.getElementById('loading-screen'),
-            resultArea: document.getElementById('result-area'),
-            cardPreview: document.getElementById('card-preview'),
-            cardImg: document.getElementById('card-img-el'),
-            modal: document.getElementById('info-modal')
-        };
-
-        const fields = {
-            name: document.getElementById('card-name'),
-            shop: document.getElementById('shop-name-display'),
-            atk: document.getElementById('val-atk'),
-            def: document.getElementById('val-def'),
-            score: document.getElementById('val-score'),
-            praise: document.getElementById('praise-text'),
-            rarity: document.getElementById('rarity-icon'),
-            serial: document.getElementById('serial-num')
-        };
 
         async function geminiFetch(payload) {
-            let delay = 1000;
+            if (!apiKey) {
+                throw new Error("APIキーが設定されていません。コード内の apiKey = \"\"; の部分にキーを入力してください。");
+            }
+            
+            let lastError = null;
             for (let i = 0; i < 5; i++) {
                 try {
-                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${apiKey}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
                     });
-                    if (response.ok) return await response.json();
-                } catch (e) {}
-                await new Promise(r => setTimeout(r, delay));
-                delay *= 2;
+                    const data = await response.json();
+                    if (response.ok) return data;
+                    lastError = data.error?.message || "Unknown error";
+                } catch (e) {
+                    lastError = e.message;
+                }
+                await new Promise(r => setTimeout(r, 1000 * Math.pow(2, i)));
             }
-            throw new Error("API Connection Error");
+            throw new Error(`APIエラー: ${lastError}`);
         }
 
-        el.fileInput.addEventListener('change', async (e) => {
+        document.getElementById('file-input').addEventListener('change', async (e) => {
             const file = e.target.files[0];
-            if (!file) return;
+            if (!file || !apiKey) {
+                if(!apiKey) alert("APIキーが未設定です。コードを確認してください。");
+                return;
+            }
 
-            // 1. Hide form and show loading
-            el.formContainer.style.display = 'none';
-            el.loadingScreen.style.display = 'flex';
-            const msgInterval = setInterval(updatePosMessage, 2000);
-            updatePosMessage();
+            document.getElementById('main-form-container').style.display = 'none';
+            document.getElementById('loading-screen').style.display = 'flex';
+            const msgTimer = setInterval(() => {
+                document.getElementById('pos-message').textContent = messages[msgIndex];
+                msgIndex = (msgIndex + 1) % messages.length;
+            }, 2000);
 
             const reader = new FileReader();
             reader.onload = async (event) => {
-                el.cardImg.src = event.target.result;
+                const base64Data = event.target.result.split(',')[1];
+                document.getElementById('card-img-el').src = event.target.result;
+
                 try {
-                    await processCard(event.target.result.split(',')[1]);
+                    const dish = document.getElementById('input-dish').value || "至高の料理";
+                    const prompt = `Gourmet Judge AI. Analyze Dish: ${dish}, User text: ${document.getElementById('input-points').value}. Output JSON {name, praise, atk, def, rarity, total_score}`;
+                    
+                    const res = await geminiFetch({
+                        contents: [{ parts: [{ text: prompt }, { inlineData: { mimeType: "image/jpeg", data: base64Data } }] }],
+                        generationConfig: { responseMimeType: "application/json" }
+                    });
+
+                    const result = JSON.parse(res.candidates[0].content.parts[0].text);
+                    
+                    document.getElementById('card-name').textContent = result.name;
+                    document.getElementById('praise-text').textContent = result.praise;
+                    document.getElementById('val-atk').textContent = result.atk;
+                    document.getElementById('val-def').textContent = result.def;
+                    document.getElementById('val-score').textContent = result.total_score;
+                    document.getElementById('rarity-icon').textContent = result.rarity;
+
+                    const preview = document.getElementById('card-preview');
+                    preview.classList.remove('effect-ur', 'effect-sr');
+                    if (result.rarity === 'UR') preview.classList.add('effect-ur');
+                    if (result.rarity === 'SR') preview.classList.add('effect-sr');
+
+                    document.getElementById('loading-screen').style.display = 'none';
+                    document.getElementById('result-area').style.display = 'flex';
+                    setTimeout(() => preview.classList.add('active'), 100);
+
+                } catch (err) {
+                    alert("エラーが発生しました:\n" + err.message);
+                    document.getElementById('main-form-container').style.display = 'flex';
+                    document.getElementById('loading-screen').style.display = 'none';
                 } finally {
-                    clearInterval(msgInterval);
-                    el.loadingScreen.style.display = 'none';
+                    clearInterval(msgTimer);
                 }
             };
             reader.readAsDataURL(file);
         });
 
-        async function processCard(base64Data) {
-            try {
-                const userText = el.inputPoints.value;
-                const dishName = el.inputDish.value || "至高の一品";
-                
-                const textPrompt = `As a Gourmet Appraisal AI, analyze the following info:
-                Dish: ${dishName}
-                Shop: ${el.inputShop.value || "Hidden Gem"}
-                User's points: ${userText}
-                
-                [Rarity Determination Rules]
-                1. If user input is long, specific, and passionate (positive), rarity (UR, SR) chance increases greatly.
-                2. If image artistry (color, composition, lighting) is extremely high, high score.
-                3. If no text, judge by image artistry only.
-                4. Basic rates: UR(2%), SR(13%), R(35%), N(50%).
-                
-                Output: JSON { "name", "shop", "praise", "atk", "def", "rarity", "total_score" }
-                
-                [Constraints]
-                - "praise" should be 140-180 chars in Japanese. Include #デリシャスデュエル.
-                - "atk", "def" between 0-1000.
-                - "rarity" is UR, SR, R, or N.`;
-
-                const textResult = await geminiFetch({
-                    contents: [{ parts: [{ text: textPrompt }, { inlineData: { mimeType: "image/jpeg", data: base64Data } }] }],
-                    generationConfig: { responseMimeType: "application/json" }
-                });
-                
-                currentCardData = JSON.parse(textResult.candidates[0].content.parts[0].text);
-                updateUI(currentCardData);
-                
-                el.resultArea.style.display = 'flex';
-                el.cardPreview.style.display = 'flex';
-                setTimeout(() => el.cardPreview.classList.add('active'), 50);
-
-                if(currentCardData.rarity === 'UR') {
-                    document.body.classList.add('screen-shake');
-                    setTimeout(() => document.body.classList.remove('screen-shake'), 500);
-                }
-            } catch (err) {
-                alert("Appraisal failed. Please try again.");
-                location.reload();
-            }
-        }
-
-        function updateUI(data) {
-            fields.name.textContent = data.name;
-            fields.shop.textContent = data.shop || "";
-            fields.praise.textContent = data.praise;
-            fields.atk.textContent = Math.min(data.atk, 1000);
-            fields.def.textContent = Math.min(data.def, 1000);
-            fields.score.textContent = data.total_score;
-            fields.rarity.textContent = data.rarity;
-            fields.serial.textContent = Math.floor(Math.random() * 9000 + 1000);
-
-            el.cardPreview.classList.remove('effect-ur', 'effect-sr');
-            if (data.rarity === 'UR') el.cardPreview.classList.add('effect-ur');
-            else if (data.rarity === 'SR') el.cardPreview.classList.add('effect-sr');
-        }
-
-        function closeModal() { el.modal.classList.add('hidden'); el.modal.classList.remove('flex'); }
-
-        document.getElementById('report-btn').onclick = () => {
-            document.getElementById('modal-title').textContent = fields.name.textContent;
-            document.getElementById('modal-body').textContent = currentCardData.praise;
-            el.modal.classList.remove('hidden');
-            el.modal.classList.add('flex');
-        };
-
-        document.getElementById('copy-btn').onclick = () => {
-            const text = `${fields.name.textContent} (${fields.shop.textContent})\nRarity: ${currentCardData.rarity}\n\n${currentCardData.praise}`;
-            const dummy = document.createElement("textarea");
-            document.body.appendChild(dummy);
-            dummy.value = text; dummy.select();
-            document.execCommand("copy");
-            document.body.removeChild(dummy);
-            const btn = document.getElementById('copy-btn');
-            btn.textContent = "Copied!";
-            setTimeout(() => btn.textContent = "Copy SNS Text", 2000);
-        };
-
-        // Download logic with safety measures for layout
         document.getElementById('download-btn').onclick = async () => {
-            const target = el.cardPreview;
-            const originalTransform = target.style.transform;
+            const target = document.getElementById('card-preview');
             target.classList.add('is-exporting');
-            
-            try {
-                const canvas = await html2canvas(target, { 
-                    scale: 3, 
-                    useCORS: true, 
-                    backgroundColor: null,
-                    logging: false,
-                    width: 360,
-                    height: 540,
-                    onclone: (clonedDoc) => {
-                        const clonedCard = clonedDoc.getElementById('card-preview');
-                        clonedCard.style.display = 'flex';
-                        clonedCard.style.transform = 'none';
-                    }
-                });
-
-                const link = document.createElement('a');
-                link.download = `${fields.name.textContent}_美食カード.png`;
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-            } catch (err) {
-                console.error("Save error:", err);
-            } finally {
-                target.classList.remove('is-exporting');
-                target.style.transform = originalTransform;
-            }
+            const canvas = await html2canvas(target, { scale: 2, useCORS: true });
+            const link = document.createElement('a');
+            link.download = 'delicious_card.png';
+            link.href = canvas.toDataURL();
+            link.click();
+            target.classList.remove('is-exporting');
         };
     </script>
 </body>
