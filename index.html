@@ -164,7 +164,6 @@
             display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100;
         }
 
-        /* エラーログ表示エリア */
         #error-log {
             display: none;
             background: #ffeaa7;
@@ -232,8 +231,9 @@
     </div>
 
     <script>
-        // APIキー（もしエラーが続く場合は、Google AI Studioで新しいキーを発行し直してください）
-        const apiKey = "AIzaSyA2WqHiSSRHx9yKpJFe8SNcIdTBrW09TEc"; 
+        // APIキーの修正：前後の空白を除去して確実に認識されるようにしました
+        const rawKey = "AIzaSyA2WqHiSSRHx9yKpJFe8SNcIdTBrW09TEc"; 
+        const apiKey = rawKey.trim();
 
         const messages = ["香りを分析中...", "旨味成分を計算中...", "隠し味を特定中...", "伝説のレシピと照合中...", "最高の一言を考案中..."];
         let msgIndex = 0;
@@ -244,12 +244,31 @@
             log.innerText = `[DEBUG ERROR] ${msg}`;
         }
 
+        // 画像をリサイズする関数（Google APIのエラー回避用）
+        async function resizeImage(base64Str) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.src = 'data:image/jpeg;base64,' + base64Str;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 800; // APIに送るには十分なサイズ
+                    const scale = MAX_WIDTH / img.width;
+                    if (scale >= 1) { resolve(base64Str); return; }
+                    canvas.width = MAX_WIDTH;
+                    canvas.height = img.height * scale;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    resolve(canvas.toDataURL('image/jpeg', 0.8).split(',')[1]);
+                };
+            });
+        }
+
         async function geminiFetch(payload) {
-            if (!apiKey || apiKey.includes("ここに")) {
-                throw new Error("APIキーが設定されていません。");
+            if (!apiKey || apiKey === "") {
+                throw new Error("APIキーが見つかりません。");
             }
             
-            // v1betaモデルエンドポイント（より新しい機能をサポート）
+            // v1beta を使用
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
             
             try {
@@ -262,13 +281,11 @@
                 const data = await response.json();
                 
                 if (!response.ok) {
-                    console.error("API Error Data:", data);
-                    throw new Error(data.error?.message || `HTTPエラー: ${response.status}`);
+                    throw new Error(data.error?.message || `API Error: ${response.status}`);
                 }
                 
                 return data;
             } catch (e) {
-                console.error("Fetch Error:", e);
                 throw e;
             }
         }
@@ -277,10 +294,7 @@
             const file = e.target.files[0];
             if (!file) return;
 
-            // エラー表示をクリア
             document.getElementById('error-log').style.display = 'none';
-
-            // 表示切り替え
             document.getElementById('main-form-container').style.display = 'none';
             document.getElementById('loading-screen').style.display = 'flex';
             
@@ -291,10 +305,13 @@
 
             const reader = new FileReader();
             reader.onload = async (event) => {
-                const base64Data = event.target.result.split(',')[1];
+                let base64Data = event.target.result.split(',')[1];
                 document.getElementById('card-img-el').src = event.target.result;
 
                 try {
+                    // 画像の軽量化
+                    base64Data = await resizeImage(base64Data);
+
                     const dish = document.getElementById('input-dish').value || "至高の料理";
                     const shop = document.getElementById('input-shop').value || "名もなき名店";
                     const points = document.getElementById('input-points').value || "とにかく美味しい！";
@@ -307,7 +324,7 @@
 出力形式(JSON):
 {
   "name": "二つ名付き料理名(15文字以内)",
-  "praise": "100文字以内の熱い食レポ。語尾は『〜ぜ！』や『〜なのだ。』など特徴的に。",
+  "praise": "100文字以内の熱い食レポ。語尾は特徴的に。",
   "atk": 500〜9999の数値,
   "def": 500〜9999の数値,
   "rarity": "N, SR, URのどれか",
@@ -323,20 +340,13 @@
                         }],
                         generationConfig: { 
                             responseMimeType: "application/json",
-                            temperature: 0.9
+                            temperature: 0.8
                         }
                     };
 
                     const res = await geminiFetch(payload);
-
-                    if (!res.candidates || !res.candidates[0].content) {
-                        throw new Error("AIが回答を作成できませんでした。");
-                    }
-
-                    const jsonText = res.candidates[0].content.parts[0].text;
-                    const result = JSON.parse(jsonText);
+                    const result = JSON.parse(res.candidates[0].content.parts[0].text);
                     
-                    // カードへ反映
                     document.getElementById('card-name').textContent = result.name;
                     document.getElementById('praise-text').textContent = result.praise;
                     document.getElementById('val-atk').textContent = `ATK ${result.atk}`;
@@ -349,7 +359,6 @@
                     if (result.rarity === 'UR') preview.classList.add('effect-ur');
                     if (result.rarity === 'SR') preview.classList.add('effect-sr');
 
-                    // 表示
                     document.getElementById('loading-screen').style.display = 'none';
                     document.getElementById('result-area').style.display = 'flex';
                     setTimeout(() => preview.classList.add('active'), 100);
@@ -364,26 +373,19 @@
             reader.readAsDataURL(file);
         });
 
-        // 画像保存
         document.getElementById('download-btn').onclick = async () => {
             const btn = document.getElementById('download-btn');
             btn.textContent = "保存中...";
-            
             const target = document.getElementById('card-preview');
             target.classList.add('is-exporting');
-            
             try {
-                const canvas = await html2canvas(target, { 
-                    scale: 2, 
-                    useCORS: true,
-                    logging: false
-                });
+                const canvas = await html2canvas(target, { scale: 2, useCORS: true });
                 const link = document.createElement('a');
                 link.download = `delicious_duel_${Date.now()}.png`;
                 link.href = canvas.toDataURL("image/png");
                 link.click();
             } catch (e) {
-                alert("保存に失敗しました。スクリーンショットを撮ってください。");
+                alert("保存に失敗しました。");
             } finally {
                 target.classList.remove('is-exporting');
                 btn.textContent = "このカードを保存する";
