@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>デリシャスデュエル - 究極の美食カード</title>
-    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
-    <script src="[https://html2canvas.hertzen.com/dist/html2canvas.min.js](https://html2canvas.hertzen.com/dist/html2canvas.min.js)"></script>
-    <link href="[https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800;900&display=swap](https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800;900&display=swap)" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-main: #f0f2f5;
@@ -150,14 +150,15 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 70vh;
             width: 100%;
             max-width: 600px;
+            padding: 20px;
         }
 
         .ui-card { background: white; border-radius: 35px; padding: 2.5rem; box-shadow: 0 20px 50px rgba(0,0,0,0.1); width: 100%; }
         .input-jp { width: 100%; background: #f1f2f6; border: 3px solid transparent; border-radius: 18px; padding: 14px 22px; font-weight: 800; margin-bottom: 1rem; }
-        .btn-action { background: #fbc531; color: #2d3436; padding: 1.2rem; border-radius: 22px; font-weight: 900; width: 100%; box-shadow: 0 6px 0 #e1b12c; cursor: pointer; }
+        .btn-action { background: #fbc531; color: #2d3436; padding: 1.2rem; border-radius: 22px; font-weight: 900; width: 100%; box-shadow: 0 6px 0 #e1b12c; cursor: pointer; transition: all 0.2s; }
+        .btn-action:active { transform: translateY(4px); box-shadow: 0 2px 0 #e1b12c; }
 
         #loading-screen {
             position: fixed; inset: 0; background: rgba(255,255,255,0.95);
@@ -173,7 +174,7 @@
             border-radius: 15px;
             font-size: 12px;
             font-family: monospace;
-            max-width: 90%;
+            max-width: 100%;
             word-break: break-all;
         }
     </style>
