@@ -27,18 +27,6 @@
             align-items: center;
         }
 
-        /* Screen Shake Effect */
-        .screen-shake {
-            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
-        }
-        @keyframes shake {
-            10%, 90% { transform: translate3d(-1px, 0, 0); }
-            20%, 80% { transform: translate3d(2px, 0, 0); }
-            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-            40%, 60% { transform: translate3d(4px, 0, 0); }
-        }
-
-        /* Card Structure */
         .card-container {
             width: 360px;
             height: 540px;
@@ -68,7 +56,6 @@
             animation: cardAppear 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
         }
 
-        /* Rarity Effects */
         .effect-ur {
             border-color: var(--gold) !important;
             box-shadow: 0 0 50px var(--gold-aura), inset 0 0 20px var(--gold-aura) !important;
@@ -104,7 +91,6 @@
             box-shadow: 0 0 25px rgba(189, 195, 199, 0.6) !important;
         }
 
-        /* Photo Area */
         .photo-frame {
             width: 100%;
             height: 200px;
@@ -160,7 +146,6 @@
         }
         .stat-num { font-size: 18px; font-weight: 900; line-height: 1.1; }
 
-        /* Form UI */
         #main-form-container {
             display: flex;
             justify-content: center;
@@ -190,7 +175,7 @@
         <div class="ui-card">
             <input type="text" id="input-dish" class="input-jp" placeholder="料理の名前">
             <input type="text" id="input-shop" class="input-jp" placeholder="お店の名前">
-            <textarea id="input-points" class="input-jp h-24" placeholder="美食ポイント（熱量が高いほどレア度UP！）"></textarea>
+            <textarea id="input-points" class="input-jp h-24" placeholder="美食ポイント（想いを込めるほどレア度UP！）"></textarea>
             
             <label class="block cursor-pointer">
                 <div class="border-4 border-dashed border-slate-200 rounded-[25px] py-8 flex flex-col items-center hover:bg-slate-50 transition">
@@ -202,7 +187,7 @@
     </div>
 
     <div id="loading-screen">
-        <div class="text-2xl font-black text-yellow-500 mb-4">思考中です...</div>
+        <div class="text-2xl font-black text-yellow-500 mb-4">AI鑑定員が実食中...</div>
         <div id="pos-message" class="text-lg font-bold text-slate-500"></div>
     </div>
 
@@ -232,45 +217,46 @@
     </div>
 
     <script>
-        // 【重要】GitHubで動かすには、ここに自分のAPIキーを貼り付けてください
+        // 【重要】GitHubで公開する場合、このキーは他人に知られる可能性があります。
+        // 無料枠のキーであれば、急激な課金トラブルにはなりにくいですが、盗難防止のため定期的なキーの作り替えを推奨します。
         const apiKey = "AIzaSyA2WqHiSSRHx9yKpJFe8SNcIdTBrW09TEc"; 
 
-        const messages = ["感動を解析中...", "盛り付けをスキャン中...", "旨味を計算中...", "伝説を読み解き中..."];
+        const messages = ["香りを分析中...", "旨味成分を計算中...", "伝説のレシピと照合中...", "最高の一言を考案中..."];
         let msgIndex = 0;
 
         async function geminiFetch(payload) {
-            if (!apiKey) {
-                throw new Error("APIキーが設定されていません。コード内の apiKey = \"\"; の部分にキーを入力してください。");
+            if (!apiKey || apiKey === "ここにAPIキー") {
+                throw new Error("APIキーが設定されていません。コード内の apiKey = \"...\" の部分を確認してください。");
             }
             
             let lastError = null;
-            for (let i = 0; i < 5; i++) {
+            // リトライ処理（最大3回）
+            for (let i = 0; i < 3; i++) {
                 try {
-                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${apiKey}`, {
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
                     });
                     const data = await response.json();
                     if (response.ok) return data;
-                    lastError = data.error?.message || "Unknown error";
+                    lastError = data.error?.message || "通信エラーが発生しました。";
                 } catch (e) {
                     lastError = e.message;
                 }
                 await new Promise(r => setTimeout(r, 1000 * Math.pow(2, i)));
             }
-            throw new Error(`APIエラー: ${lastError}`);
+            throw new Error(`AIとの通信に失敗しました: ${lastError}`);
         }
 
         document.getElementById('file-input').addEventListener('change', async (e) => {
             const file = e.target.files[0];
-            if (!file || !apiKey) {
-                if(!apiKey) alert("APIキーが未設定です。コードを確認してください。");
-                return;
-            }
+            if (!file) return;
 
+            // フォームを消してロード画面へ
             document.getElementById('main-form-container').style.display = 'none';
             document.getElementById('loading-screen').style.display = 'flex';
+            
             const msgTimer = setInterval(() => {
                 document.getElementById('pos-message').textContent = messages[msgIndex];
                 msgIndex = (msgIndex + 1) % messages.length;
@@ -283,19 +269,44 @@
 
                 try {
                     const dish = document.getElementById('input-dish').value || "至高の料理";
-                    const prompt = `Gourmet Judge AI. Analyze Dish: ${dish}, User text: ${document.getElementById('input-points').value}. Output JSON {name, praise, atk, def, rarity, total_score}`;
+                    const shop = document.getElementById('input-shop').value || "名もなき名店";
+                    const points = document.getElementById('input-points').value || "とにかく美味しい！";
+                    
+                    const prompt = `あなたは「美味決闘」というカードゲームの鑑定士です。
+以下の情報を元に、面白くて熱量の高いカードデータを作ってください。
+料理名: ${dish}
+店名: ${shop}
+感想: ${points}
+
+出力は必ず以下のJSON形式にしてください。
+{
+  "name": "（カードにふさわしい二つ名付きの料理名）",
+  "praise": "（100文字以内の食レポ。決め台詞っぽく）",
+  "atk": (攻撃力: 500〜9999),
+  "def": (守備力: 500〜9999),
+  "rarity": "（N, SR, URのいずれか。感想が熱ければURにしてください）",
+  "total_score": (美食スコア: 50〜99)
+}`;
                     
                     const res = await geminiFetch({
                         contents: [{ parts: [{ text: prompt }, { inlineData: { mimeType: "image/jpeg", data: base64Data } }] }],
-                        generationConfig: { responseMimeType: "application/json" }
+                        generationConfig: { 
+                            responseMimeType: "application/json",
+                            temperature: 0.8
+                        }
                     });
+
+                    if (!res.candidates || res.candidates.length === 0) {
+                        throw new Error("AIが回答を生成できませんでした。画像の内容を確認してください。");
+                    }
 
                     const result = JSON.parse(res.candidates[0].content.parts[0].text);
                     
+                    // 値の反映
                     document.getElementById('card-name').textContent = result.name;
                     document.getElementById('praise-text').textContent = result.praise;
-                    document.getElementById('val-atk').textContent = result.atk;
-                    document.getElementById('val-def').textContent = result.def;
+                    document.getElementById('val-atk').textContent = `ATK ${result.atk}`;
+                    document.getElementById('val-def').textContent = `DEF ${result.def}`;
                     document.getElementById('val-score').textContent = result.total_score;
                     document.getElementById('rarity-icon').textContent = result.rarity;
 
@@ -304,30 +315,50 @@
                     if (result.rarity === 'UR') preview.classList.add('effect-ur');
                     if (result.rarity === 'SR') preview.classList.add('effect-sr');
 
+                    // 表示切り替え
                     document.getElementById('loading-screen').style.display = 'none';
                     document.getElementById('result-area').style.display = 'flex';
                     setTimeout(() => preview.classList.add('active'), 100);
 
                 } catch (err) {
-                    alert("エラーが発生しました:\n" + err.message);
+                    console.error(err);
+                    alert("【エラー】\n" + err.message + "\n\n※APIキーの有効期限や設定、画像サイズ（大きすぎないか）を確認してください。");
                     document.getElementById('main-form-container').style.display = 'flex';
                     document.getElementById('loading-screen').style.display = 'none';
                 } finally {
                     clearInterval(msgTimer);
                 }
             };
+            reader.onerror = () => alert("画像の読み込みに失敗しました。");
             reader.readAsDataURL(file);
         });
 
+        // カード保存機能
         document.getElementById('download-btn').onclick = async () => {
+            const btn = document.getElementById('download-btn');
+            btn.textContent = "保存中...";
+            btn.disabled = true;
+            
             const target = document.getElementById('card-preview');
             target.classList.add('is-exporting');
-            const canvas = await html2canvas(target, { scale: 2, useCORS: true });
-            const link = document.createElement('a');
-            link.download = 'delicious_card.png';
-            link.href = canvas.toDataURL();
-            link.click();
-            target.classList.remove('is-exporting');
+            
+            try {
+                const canvas = await html2canvas(target, { 
+                    scale: 3, 
+                    useCORS: true,
+                    backgroundColor: null 
+                });
+                const link = document.createElement('a');
+                link.download = `delicious_card_${Date.now()}.png`;
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            } catch (e) {
+                alert("保存に失敗しました。スクリーンショットをお試しください。");
+            } finally {
+                target.classList.remove('is-exporting');
+                btn.textContent = "このカードを保存する";
+                btn.disabled = false;
+            }
         };
     </script>
 </body>
